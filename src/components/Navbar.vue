@@ -1,0 +1,122 @@
+<template>
+  <nav class="navbar">
+    <ul class="navbar__list">
+      <li
+        v-for="link in links"
+        :key="link.r"
+        class="navbar__list-items">
+        <router-link :to="link.r" class="navbar__btn" draggable="false">
+          <i :class="link.i"/>
+        </router-link>
+      </li>
+    </ul>
+    <div class="drag-indicator"/>
+  </nav>
+</template>
+
+<script>
+export default {
+  data: () => ({
+    links: [
+      { r: '/', i: 'fas fa-home' },
+      { r: '/tasks', i: 'bi-list-task' },
+      { r: '/routine', i: 'bi-table' },
+      { r: '/birthdays', i: 'fas fa-birthday-cake' },
+      { r: '/settings', i: 'bi-gear-fill' }
+    ]
+  })
+}
+</script>
+
+<style lang="scss" scoped>
+@use '../assets/scss' as r;
+
+.navbar {
+  position: relative;
+
+  box-shadow: #0004 0 0 1em;
+
+  -webkit-app-region: drag;
+  user-select: none;
+
+  .drag-indicator {
+    position: absolute;
+    inset: 0 0 0 auto;
+
+    height: 7px;
+    width: 14px;
+    margin: 23.5px 25px;
+    border-top: #777 solid 2px;
+    border-bottom: #777 solid 2px;
+  }
+
+  .current-page {
+    padding: 12px 25px;
+    width: 115px;
+
+    color: r.$accent;
+    line-height: 30px;
+  }
+
+  &__list {
+    display: flex;
+    padding: 0;
+    margin: 0;
+
+    list-style-type: none;
+  }
+
+  &__list-items {
+    display: block;
+  }
+
+  &__btn {
+    position: relative;
+
+    display: inline-block;
+    padding: 12px 25px;
+
+    color: #777;
+    text-decoration: none;
+    font-size: 1.2em;
+    line-height: 30px;
+
+    -webkit-app-region: no-drag;
+    transition: .1s;
+    cursor: pointer;
+
+    &:hover {
+      background: #0001;
+
+      &:active {
+        transform: scale(0.96);
+      }
+
+      .theme-dark & {
+        background: #fff1;
+      }
+    }
+
+    &::after {
+      position: absolute;
+      inset: auto 50% 0;
+
+      background: #0000;
+      height: 3px;
+
+      content: '';
+      transition: inset .2s, background-color 0s .2s;
+    }
+
+    &.router-link-active {
+      color: r.$accent;
+
+      &::after {
+        inset: auto 10px 0;
+        background: r.$accent;
+        transition: inset .2s;
+      }
+    }
+  }
+}
+</style>
