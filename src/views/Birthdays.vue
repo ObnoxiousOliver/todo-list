@@ -1,3 +1,3 @@
 <template>
-  Birthdays
+  <div class="birthdays-view">Birthdays</div>
 </template>

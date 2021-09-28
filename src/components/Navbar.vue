@@ -1,5 +1,6 @@
 <template>
   <nav class="navbar">
+    <div class="drag-area"/>
     <ul class="navbar__list">
       <li
         v-for="link in links"
@@ -33,11 +34,13 @@ export default {
 
 .navbar {
   position: relative;
-
   box-shadow: #0004 0 0 1em;
 
-  -webkit-app-region: drag;
-  user-select: none;
+  .drag-area {
+    -webkit-app-region: drag;
+    position: absolute;
+    inset: 5px 5px 0;
+  }
 
   .drag-indicator {
     position: absolute;
@@ -76,13 +79,15 @@ export default {
     display: inline-block;
     padding: 12px 25px;
 
+    outline-offset: -2px;
+
     color: #777;
     text-decoration: none;
     font-size: 1.2em;
     line-height: 30px;
 
     -webkit-app-region: no-drag;
-    transition: .1s;
+    transition: .2s;
     cursor: pointer;
 
     &:hover {
@@ -105,7 +110,8 @@ export default {
       height: 3px;
 
       content: '';
-      transition: inset .2s, background-color 0s .2s;
+      transition: inset .3s, background-color 0s .3s;
+      transition-timing-function: r.$easing;
     }
 
     &.router-link-active {
@@ -114,7 +120,7 @@ export default {
       &::after {
         inset: auto 10px 0;
         background: r.$accent;
-        transition: inset .2s;
+        transition: inset .3s;
       }
     }
   }

@@ -1,3 +1,5 @@
 <template>
-  Routine
+  <div class="routine-view">
+    Routine
+  </div>
 </template>

@@ -1,1 +1,15 @@
 $accent: #6587e4;
+$bg-light: #fff;
+$bg-dark: #212227;
+$bg-mod: var(--bg-mod);
+$easing: cubic-bezier(0.215, 0.610, 0.355, 1);
+
+@mixin input-reset {
+  appearance: none;
+
+  background: unset;
+  border: unset;
+
+  font: inherit;
+  color: inherit;
+}

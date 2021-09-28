@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import electron, { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -15,17 +15,41 @@ async function createWindow () {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
-    minWidth: 370,
+    minWidth: 400,
     minHeight: 500,
     frame: false,
     skipTaskbar: true,
+    maximizable: false,
+    fullscreenable: false,
     transparent: true,
+    title: 'ToDo List',
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
+  })
+
+  ipcMain.on('getBounds', (e) => {
+    e.returnValue = win.getBounds()
+  })
+  ipcMain.on('bounds', (e) => {
+    win.on('moved', () => {
+      e.reply('bounds:update', win.getBounds())
+    })
+    win.on('resized', () => {
+      e.reply('bounds:update', win.getBounds())
+    })
+  })
+
+  ipcMain.on('setBounds', (e, bounds) => {
+    win.setBounds(bounds)
+  })
+
+  ipcMain.on('lockWindow', (e, lock) => {
+    win.setMovable(!lock)
+    win.setResizable(!lock)
   })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -67,6 +91,14 @@ app.on('ready', async () => {
     }
   }
   createWindow()
+
+  ipcMain.on('userDataPath', (e) => {
+    e.returnValue = app.getPath('userData')
+  })
+
+  ipcMain.on('getAllDisplays', (e) => {
+    e.returnValue = electron.screen.getAllDisplays()
+  })
 })
 
 // Exit cleanly on request from parent process in development mode.
