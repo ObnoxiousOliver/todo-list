@@ -4,6 +4,7 @@
     @blur="applyInput"
     @keydown.enter="applyInput"
     @focus="focus = true"
+    @wheel="wheel"
     v-model="input"
     class="input-field__field"
     type="number">
@@ -20,24 +21,39 @@ export default {
     'update:value'
   ],
   props: {
-    value: Number
+    value: Number,
+    min: Number,
+    max: Number
   },
   data () {
     return {
-      input: this.value
+      input: this.value,
+      focus: false
     }
   },
   watch: {
     value () {
       this.input = this.value
-    }
+    },
+    input (val) {
+      this.input = Math.min(this.max || Infinity, Math.max(this.min || -Infinity, val))
+    },
+    min () { this.input = this.value },
+    max () { this.input = this.value }
   },
   methods: {
     applyInput () {
+      this.focus = false
       if (this.input !== '') {
         this.$emit('update:value', this.input)
       }
       if (this.value) this.input = this.value
+    },
+    wheel (e) {
+      if (!this.focus) return
+
+      e.preventDefault()
+      this.input += -e.deltaY / Math.abs(e.deltaY)
     }
   }
 }

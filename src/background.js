@@ -3,6 +3,7 @@
 import electron, { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
+import AutoLaunch from 'auto-launch'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Scheme must be registered before the app is ready
@@ -98,6 +99,14 @@ app.on('ready', async () => {
 
   ipcMain.on('getAllDisplays', (e) => {
     e.returnValue = electron.screen.getAllDisplays()
+  })
+
+  var autoLaunch = new AutoLaunch({
+    name: 'ToDo List',
+    path: app.getPath('exe')
+  })
+  autoLaunch.isEnabled().then((isEnabled) => {
+    if (!isEnabled) autoLaunch.enable()
   })
 })
 

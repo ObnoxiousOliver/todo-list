@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar">
+  <nav :class="['navbar', config.lockWindow ? 'navbar--lock-window' : '']">
     <div class="drag-area"/>
     <ul class="navbar__list">
       <li
@@ -11,18 +11,22 @@
         </router-link>
       </li>
     </ul>
-    <div class="drag-indicator"/>
+    <div v-if="!config.lockWindow" class="drag-indicator"/>
   </nav>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
+  computed: {
+    ...mapState(['config'])
+  },
   data: () => ({
     links: [
-      { r: '/', i: 'fas fa-home' },
-      { r: '/tasks', i: 'bi-list-task' },
-      { r: '/routine', i: 'bi-table' },
-      { r: '/birthdays', i: 'fas fa-birthday-cake' },
+      // { r: '/', i: 'fas fa-home' },
+      { r: '/', i: 'bi-list-task' },
+      // { r: '/routine', i: 'bi-table' },
+      // { r: '/birthdays', i: 'fas fa-birthday-cake' },
       { r: '/settings', i: 'bi-gear-fill' }
     ]
   })
@@ -122,6 +126,12 @@ export default {
         background: r.$accent;
         transition: inset .3s;
       }
+    }
+  }
+
+  &--lock-window {
+    .drag-area {
+      -webkit-app-region: no-drag;
     }
   }
 }

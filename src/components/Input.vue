@@ -3,7 +3,7 @@
   <input
     @blur="applyInput"
     @keydown.enter="applyInput"
-    @focus="focus = true"
+    @focus="focus = true; $emit('inputFocus')"
     v-model="input"
     class="input-field__field"
     type="text">
@@ -13,7 +13,7 @@
 <script>
 export default {
   emits: [
-    'update:value'
+    'update:value', 'inputFocus', 'inputBlur'
   ],
   props: {
     value: String
@@ -32,6 +32,8 @@ export default {
     applyInput () {
       this.$emit('update:value', this.input)
       if (this.value) this.input = this.value
+
+      this.$emit('inputBlur')
     }
   }
 }

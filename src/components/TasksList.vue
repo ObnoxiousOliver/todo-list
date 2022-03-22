@@ -1,6 +1,14 @@
 <template>
-  <transition-group name="task">
-    <Task v-for="task in tasksData" :task="task" :key="task.id" />
+  <transition-group name="task" :css="animate">
+    <Task
+      v-for="task in tasksData"
+      @taskFocus="taskFocus"
+      @taskRemoved="$emit('taskRemoved')"
+      @removeTask="removeTask"
+      :focused="focused"
+      :task="task"
+      :key="task.id"
+      :animate="animate"/>
   </transition-group>
 </template>
 
@@ -12,10 +20,15 @@ export default {
     Task
   },
   emits: [
-    'update:tasks'
+    'update:tasks',
+    'taskFocus',
+    'taskBlur',
+    'taskRemoved'
   ],
   props: {
-    tasks: Array
+    tasks: Array,
+    animate: Boolean,
+    focused: Number
   },
   data: () => ({
     tasksData: []
@@ -37,6 +50,14 @@ export default {
   mounted () {
     if (this.tasks) {
       this.tasksData = this.tasks
+    }
+  },
+  methods: {
+    removeTask (id) {
+      this.tasksData = this.tasksData.filter(x => x.id !== id)
+    },
+    taskFocus (id, task) {
+      this.$emit('taskFocus', id, task)
     }
   }
 }
@@ -67,8 +88,9 @@ export default {
   }
 
   &-leave-to {
-    transform: translateY($task-height);
+    transform: translateY(-$task-height / 2);
     height: 0;
+    padding: 0 !important;
     opacity: 0;
   }
 }

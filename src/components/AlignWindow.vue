@@ -158,7 +158,7 @@ export default {
       const isIn = (val, min, max) => min < val && val < max
 
       this.allDisplays.forEach((display, i) => {
-        var db = display.bounds
+        var db = display.workArea
 
         if (isIn(bounds.x, db.x, db.x + db.width) && isIn(bounds.y, db.y, db.y + db.height)) {
           this.screen = i
@@ -203,6 +203,7 @@ export default {
     background: rgba(r.$accent, .1);
     overflow: hidden;
     transition: .3s r.$easing;
+    border-radius: 5px;
   }
 
   &__area {
@@ -218,6 +219,7 @@ export default {
       #e4d16722 math.sqrt(2) * 3 + px,
       #e4d16755 math.sqrt(2) * 3 + px,
       #e4d16755 math.sqrt(2) * 5 + px);
+    border-radius: 5px;
   }
 
   &__taskbar {
@@ -227,6 +229,8 @@ export default {
       #f1515144 math.sqrt(2) * 3 + px,
       #f1515188 math.sqrt(2) * 3 + px,
       #f1515188 math.sqrt(2) * 5 + px);
+
+    border-radius: 4.5px;
   }
 
   &__input {

@@ -33,7 +33,7 @@ export default {
   },
   watch: {
     theme () {
-      document.body.setAttribute('class', 'theme-' + this.config.theme)
+      document.body.setAttribute('class', 'theme-' + (this.config.theme || 'light'))
     }
   },
   beforeMount () {
@@ -143,9 +143,14 @@ body {
   transition: .2s, border .3s .2s, background-color .2s;
   transition-timing-function: r.$easing;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: #8882;
     box-shadow: #0004 0 2px 5px;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: default;
   }
 
   &::after, &::before {
