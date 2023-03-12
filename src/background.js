@@ -23,7 +23,7 @@ async function createWindow () {
     maximizable: false,
     fullscreenable: false,
     transparent: true,
-    title: 'ToDo List',
+    title: 'TO-DO',
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info

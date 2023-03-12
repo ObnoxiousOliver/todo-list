@@ -30,7 +30,7 @@ export default createStore({
   actions: {
     appStart (store) {
       store.dispatch('updateConfig')
-      var bounds = store.state.config.bounds
+      var bounds = store.state.config.bounds ?? {}
 
       const isIn = (val, min, max) => min < val && val < max
 
@@ -40,8 +40,6 @@ export default createStore({
         console.log(ret)
         return ret
       })) {
-        console.log('hello')
-
         if (bounds) {
           ipcRenderer.send('setBounds', {
             width: bounds.width,
